@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	  <meta charset="utf-8">
+	  <title>Stopwatch</title>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+// Stopwatch with start/stop/split/reset. Helper functions at the bottom for clarity
+
+var T = (function () { 
+    'use strict';
+
+    var timeElapsed  = 0, 
+        timeStarted = 0,
+        splitCount = 0,
+        timeIntermedio = 0,
+        timeIntermedio2 = 0,
+        update;
+
+    return {
+        timeStarted: timeStarted,
+        timeElapsed: timeElapsed,
+        splitCount: splitCount,
+        timeIntermedio: timeIntermedio,
+        timeIntermedio2: timeIntermedio2,
+        update: update
+    };
+}());
+
+// Start timer or continue from paused time
+function startTimer() {
+
+	// If the timer has been paused, the time already elapsed is subtracted
+	// from the time NOW so that the elapsed time is maintained when the
+	// timer restarts
+	T.timeStarted = new Date().getTime() - T.timeElapsed; 
+  T.timeElapsed = T.timeIntermedio2;
+  T.timeIntermedio2 = T.timeStarted;
+  // Need setInterval as a variable so it can be cleared on stop/reset
+	update = setInterval(postTime, 10);
+
+	//Disable/enable appropriate buttons	
+	document.getElementById("reset").disabled = false;	
+	startButtons();
+	
+	return update;
+}
+
+//Freeze the timer
+function stopTimer(){
+	
+	// Stop the interval updating
+	clearInterval(update);
+
+	//Disable/enable appropriate buttons
+	stopButtons();
+}
+
+// Record split without stopping timer. Will add lap time at some point
+function split(){
+	T.splitCount++;
+
+  T.timeIntermedio2 = T.timeElapsed - T.timeIntermedio;
+	document.getElementById("splits").innerHTML += "</br>Lap " + T.splitCount + ": " + render2(T.timeIntermedio2);
+  T.timeIntermedio = new Date().getTime() - T.timeStarted;
+  //T.timeElapsed = 0;
+
+
+}
+
+//Reset the timer to zero and clear splits
+function reset(){
+	clearInterval(update);
+	T.timeStarted = 0;
+	T.timeElapsed = 0;
+	T.splitCount = 0;
+  T.timeIntermedio = 0;
+  T.timeIntermedio2 = 0;
+  document.getElementById("timer").innerHTML = "  00:00:00";
+	document.getElementById("reset").disabled = true;	
+
+	stopButtons()
+
+	document.getElementById("splits").innerHTML = "<br></br>"
+}
+
+// Disable start button, enable stop and split
+function startButtons(){
+	document.getElementById("start").disabled = true;
+	document.getElementById("stop").disabled = false;
+	document.getElementById("split").disabled = false;
+
+}
+
+// Enable start button, disable stop and split
+function stopButtons(){
+	document.getElementById("start").disabled = false;
+	document.getElementById("stop").disabled = true;
+	document.getElementById("split").disabled = true;
+
+}
+
+// Convert time to mm/ss/cc
+function render(){
+	T.timeElapsed = new Date().getTime() - T.timeStarted;
+
+	var toRender = new Date().getTime() - T.timeStarted;
+
+    var mins = Math.floor(toRender/60000);
+    toRender -= mins * 60000;
+    var secs = Math.floor(toRender/1000);
+    toRender -= secs * 1000;
+    var cent = Math.round(toRender/10);
+
+	return addLeadingZero(mins) + ":" + addLeadingZero(secs) + ":" + addLeadingZero(cent); 
+}
+  
+  function render2(){
+
+	var toRender = T.timeIntermedio2;
+
+    var mins = Math.floor(toRender/60000);
+    toRender -= mins * 60000;
+    var secs = Math.floor(toRender/1000);
+    toRender -= secs * 1000;
+    var cent = Math.round(toRender/10);
+
+	return addLeadingZero(mins) + ":" + addLeadingZero(secs) + ":" + addLeadingZero(cent); 
+}
+
+//helper function to make render neater
+function addLeadingZero (n) {
+    if(n <= 9) {
+    	return '0'+ n; 
+    	} else {
+        return '' + n; 
+    }
+} 
+
+// Post the time in the timer div
+function postTime(time) {
+	document.getElementById("timer").innerHTML = render(time);
+
+}
+</script>
+
+
+</style>
+	</head>
+
+	<body>
+		
+		<div id="container" class="auto-style1">
+			
+			<div id="timer">  00:00:00</div>
+			<button class="start" id="start" onclick="startTimer()"><span class="material-icons">play_circle</span></button>
+			<button class="abc" id="stop" onclick="stopTimer()" disabled="true"><span class="material-icons">cancel</span></button>
+			<button class="def" id="split" onclick="split()" disabled="true"><span class="material-icons">lock_reset</span></button>
+			<button class="ghi" id="reset" onclick="reset()" disabled="true"><span class="material-icons">restart_alt</span></button>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<h1></h1>
+
+
+
+
+
+
+<h1></h1>
+<h1></h1>
+<h1></h1>
+<h1></h1>
+<h1></h1>
+<h1></h1>
+
+			<div id="splits">
+
+			<br>
+
+			</div>
+
+
+		</div>
+    <nav class="nav">
+      <a href="a.html" class="nav__link">
+  <img width="30px" src="./alarm_FILL0_wght400_GRAD0_opsz48.png" alt="">
+        <span class="nav__text">Alarm</span>
+      </a>
+      <a href="stopwatch.html" class="nav__link nav__link--active">
+          <img width="30px" src="./timer_3_alt_1_FILL0_wght400_GRAD0_opsz48.png" alt="">
+        <span class="nav__text">Stopwatch</span>
+      </a>
+      <a href="b.html" class="nav__link">
+        <img width="30px" src="./public_FILL0_wght400_GRAD0_opsz48.png">
+        <span class="nav__text">World Clock</span>
+      </a>
+      <a href="alarm.html" class="nav__link">
+    <img width="30px" src="./alarm_add_FILL0_wght400_GRAD0_opsz48.png" alt="">
+        <span class="nav__text">Alarm</span>
+      </a>
+  
+      </a>
+    </nav>
+          <style>
+            body {
+                
+        background: #dddddd;
+       margin:0px;
+       text-align: center;
+       font-size: 30px;
+       font-family: 'Segoe UI', Tahoma,  Verdana, sans-serif;
+       font: bolder;
+    /*  zoom: 400%;*/
+    }
+   .abc{
+       width: 50px;
+        height: 50px;
+        margin-left: 16px;
+        border-radius: 10%;
+        border: none;
+        color: white;
+        background: #19da1f;
+        cursor: pointer;
+    }
+    .def{
+      width: 50px;
+        height: 50px;
+        margin-left: 16px;
+        border-radius: 10%;
+        border: none;
+        color: white;
+        background: #a80e0e;
+        cursor: pointer;
+    }
+    .ghi{
+      width: 50px;
+        height: 50px;
+        margin-left: 16px;
+        border-radius: 10%;
+        border: none;
+        color: white;
+        background: #08cce6;
+        cursor: pointer;
+    }
+    .auto-style1{
+        background: #ffffff;
+        border-radius: 30px;
+height: 150px;
+width:295px;
+    }
+    
+    .nav {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 55px;
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+        background-color: #ffffff;
+        display: flex;
+        overflow-x: auto;
+    }
+    
+    .nav__link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-grow: 1;
+        min-width: 50px;
+        overflow: hidden;
+        white-space: nowrap;
+        font-family: sans-serif;
+        font-size: 13px;
+        color: #444444;
+        text-decoration: none;
+        -webkit-tap-highlight-color: transparent;
+        transition: background-color 0.1s ease-in-out;
+    }
+    
+    .nav__link:hover {
+        background-color: #eeeeee;
+    }
+    
+    
+    
+    .nav__icon {
+        font-size: 18px;
+    }
+
+      
+      .timer {
+        font-family: sans-serif;
+        display: inline-block;
+        padding: 24px 32px;
+        border-radius: 30px;
+        background: white;
+      }
+      
+      .timer__part {
+        font-size: 36px;
+        font-weight: bold;
+      }
+      
+      .start {
+        width: 50px;
+        height: 50px;
+        margin-left: 16px;
+        border-radius: 10%;
+        border: none;
+        color: white;
+        background: #8208e6;
+        cursor: pointer;
+      
+      }
+      
+      .timer__btn--start {
+        background: #00b84c;
+      }
+      
+      .timer__btn--stop {
+        background: #ff0055;
+      }
+      
+          </style>
+	</body>
+
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World clock</title>
+</head>
+<body>
+    <div class="clock">
+        <div class="outer-clock-face">
+          
+          <div class="marking marking-one"></div>
+          <div class="marking marking-two"></div>
+          <div class="marking marking-three"></div>
+          <div class="marking marking-four"></div>
+          <div class="inner-clock-face">
+            <div class="hand hour-hand"></div>
+            <div class="hand min-hand"></div>
+            <div class="hand second-hand"></div>
+          </div>
+        </div>
+      </div>
+      
+    <script>
+        const secondHand = document.querySelector('.second-hand');
+const minsHand = document.querySelector('.min-hand');
+const hourHand = document.querySelector('.hour-hand');
+
+function setDate() {
+  const now = new Date();
+
+  const seconds = now.getSeconds();
+  const secondsDegrees = ((seconds / 60) * 360) + 90;
+  secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+
+  const mins = now.getMinutes();
+  const minsDegrees = ((mins / 60) * 360) + ((seconds/60)*6) + 90;
+  minsHand.style.transform = `rotate(${minsDegrees}deg)`;
+
+  const hour = now.getHours();
+  const hourDegrees = ((hour / 12) * 360) + ((mins/60)*30) + 90;
+  hourHand.style.transform = `rotate(${hourDegrees}deg)`;
+}
+
+setInterval(setDate, 1000);
+
+setDate();
+    </script>
+  
+    <style>
+        html {
+  background: #ffffff;
+  text-align: center;
+  font-size: 10px;
+}
+
+body {
+  margin: 0;
+  font-size: 2rem;
+  display: flex;
+
+  min-height: 100vh;
+
+}
+
+.clock {
+  width: 25rem;
+  height: 25rem;
+  border: 7px solid #545271;
+  border-radius: 50%;
+
+  position: relative;
+  padding: 2rem;
+  -webkit-box-shadow: 0 20px 30px rgba(104,75,106,0.65);
+  -moz-box-shadow: 0 20px 30px rgba(104,75,106,0.65);
+  box-shadow: 0 20px 30px rgba(104,75,106,0.65);
+  background: #545271;
+}
+
+.outer-clock-face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  background: #fefefc;
+  -webkit-box-shadow: 0 20px 10px rgba(62,47,63,0.45);
+  -moz-box-shadow: 0 20px 10px rgba(62,47,63,0.45);
+  box-shadow: 0 20px 10px rgba(62,47,63,0.45);
+  overflow: hidden;
+}
+
+.outer-clock-face::after {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  transform: rotate(90deg)
+}
+
+.outer-clock-face::before,
+.outer-clock-face::after,
+.outer-clock-face .marking{
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 100%;
+  background: #b8b8c5;
+  z-index: 0;
+  left: 49%;
+}
+
+.outer-clock-face .marking {
+  background: #bdbdcb;
+  width: 3px;
+}
+
+.outer-clock-face .marking.marking-one {
+  -webkit-transform: rotate(30deg);
+  -moz-transform: rotate(30deg);
+  transform: rotate(30deg)
+}
+
+.outer-clock-face .marking.marking-two {
+  -webkit-transform: rotate(60deg);
+  -moz-transform: rotate(60deg);
+  transform: rotate(60deg)
+}
+
+.outer-clock-face .marking.marking-three {
+  -webkit-transform: rotate(120deg);
+  -moz-transform: rotate(120deg);
+  transform: rotate(120deg)
+}
+
+.outer-clock-face .marking.marking-four {
+  -webkit-transform: rotate(150deg);
+  -moz-transform: rotate(150deg);
+  transform: rotate(150deg)
+}
+
+.inner-clock-face {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+  background: #fefefc;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+  z-index: 1;
+}
+
+.inner-clock-face::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  border-radius: 18px;
+  margin-left: -9px;
+  margin-top: -6px;
+  background: #4d4b63;
+  z-index: 11;
+}
+
+.hand {
+  width: 50%;
+  right: 50%;
+  height: 6px;
+  background: #61afff;
+  position: absolute;
+  top: 50%;
+  border-radius: 6px;
+  transform-origin: 100%;
+  transform: rotate(90deg);
+  transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
+}
+
+.hand.hour-hand {
+  width: 20%;
+  z-index: 3;
+}
+
+.hand.min-hand {
+  height: 3px;
+  z-index: 10;
+  width: 35%;
+}
+
+.hand.second-hand {
+  background: #ff5e5e;
+  width: 40%;
+}
+    </style>
+    
+</body>
+<nav class="nav">
+    <a href="a.html" class="nav__link">
+<img width="30px" src="./alarm_FILL0_wght400_GRAD0_opsz48.png" alt="">
+      <span class="nav__text">Alarm</span>
+    </a>
+    <a href="stopwatch.html" class="nav__link nav__link--active">
+        <img width="30px" src="./timer_3_alt_1_FILL0_wght400_GRAD0_opsz48.png" alt="">
+      <span class="nav__text">Stopwatch</span>
+    </a>
+    <a href="b.html" class="nav__link">
+      <img width="30px" src="./public_FILL0_wght400_GRAD0_opsz48.png">
+      <span class="nav__text">World Clock</span>
+    </a>
+    <a href="alarm.html" class="nav__link">
+  <img width="30px" src="./alarm_add_FILL0_wght400_GRAD0_opsz48.png" alt="">
+      <span class="nav__text">Alarm</span>
+    </a>
+
+    </a>
+  </nav>
+  <style>
+    body {
+margin: 0 0 55px 0;
+
+}
+
+.h{
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+padding: 10px;
+}
+.nav {
+position: fixed;
+bottom: 0;
+width: 300px;
+height: 55px;
+box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+background-color: #ffffff;
+display: flex;
+overflow-x: auto;
+}
+
+.nav__link {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+flex-grow: 1;
+min-width: 50px;
+overflow: hidden;
+white-space: nowrap;
+font-family: sans-serif;
+font-size: 13px;
+color: #444444;
+text-decoration: none;
+-webkit-tap-highlight-color: transparent;
+transition: background-color 0.1s ease-in-out;
+}
+
+.nav__link:hover {
+background-color: #eeeeee;
+}
+
+
+
+.nav__icon {
+font-size: 18px;
+}
+  </style>
+  
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Alarm</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div class="wrapper">
+    
+      <h1>00:00:00 PM</h1>
+      <div class="content">
+        <div class="column">
+          <select>
+            <option value="Hour" selected disabled hidden>Hour</option>
+          </select>
+        </div>
+        <div class="column">
+          <select>
+            <option value="Minute" selected disabled hidden>Minute</option>
+          </select>
+        </div>
+        <div class="column">
+          <select>
+            <option value="AM/PM" selected disabled hidden>AM/PM</option>
+          </select>
+        </div>
+      </div>
+      <button>Set Alarm</button>
+    </div>
+
+    <script src="script.js"></script>
+
+  </body>
+  <nav class="nav">
+    <a href="a.html" class="nav__link">
+<img width="30px" src="./alarm_FILL0_wght400_GRAD0_opsz48.png" alt="">
+      <span class="nav__text">Alarm</span>
+    </a>
+    <a href="stopwatch.html" class="nav__link nav__link--active">
+        <img width="30px" src="./timer_3_alt_1_FILL0_wght400_GRAD0_opsz48.png" alt="">
+      <span class="nav__text">Stopwatch</span>
+    </a>
+    <a href="b.html" class="nav__link">
+      <img width="30px" src="./public_FILL0_wght400_GRAD0_opsz48.png">
+      <span class="nav__text">World Clock</span>
+    </a>
+    <a href="alarm.html" class="nav__link">
+  <img width="30px" src="./alarm_add_FILL0_wght400_GRAD0_opsz48.png" alt="">
+      <span class="nav__text">Alarm</span>
+    </a>
+
+    </a>
+  </nav>
+  <style>
+    body {
+margin: 0 0 55px 0;
+}
+
+.nav {
+position: fixed;
+bottom: 0;
+width: 100%;
+height: 55px;
+box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+background-color: #ffffff;
+display: flex;
+overflow-x: auto;
+}
+
+.nav__link {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+flex-grow: 1;
+min-width: 50px;
+overflow: hidden;
+white-space: nowrap;
+font-family: sans-serif;
+font-size: 13px;
+color: #444444;
+text-decoration: none;
+-webkit-tap-highlight-color: transparent;
+transition: background-color 0.1s ease-in-out;
+}
+
+.nav__link:hover {
+background-color: #eeeeee;
+}
+
+
+
+.nav__icon {
+font-size: 18px;
+}
+  </style>
+</html>

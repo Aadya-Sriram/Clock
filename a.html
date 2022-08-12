@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    
+    
+    <div class="timer">
+        <span class="timer__part timer__part--minutes">00</span>
+        <span class="timer__part">:</span>
+        <span class="timer__part timer__part--seconds">00</span>
+        <button type="button" class="timer__btn timer__btn--control timer__btn--start"><span class="material-icons">play_circle</span></button>
+        <button type="button" class="timer__btn timer__btn--reset "><span class="material-icons">restart_alt</span></button>
+    </div>
+    <style>body {
+        background: #dddddd;
+        margin: 24px;
+      }
+      
+      .timer {
+        font-family: sans-serif;
+        display: inline-block;
+        padding: 24px 32px;
+        border-radius: 30px;
+        background: white;
+      }
+      
+      .timer__part {
+        font-size: 36px;
+        font-weight: bold;
+      }
+      
+      .timer__btn {
+        width: 50px;
+        height: 50px;
+        margin-left: 16px;
+        border-radius: 10%;
+        border: none;
+        color: white;
+        background: #8208e6;
+        cursor: pointer;
+      }
+      
+      .timer__btn--start {
+        background: #00b84c;
+      }
+      
+      .timer__btn--stop {
+        background: #ff0256;
+      }
+      </style>
+      <script>
+        class Timer {
+  constructor(root) {
+    root.innerHTML = Timer.getHTML();
+
+    this.el = {
+      minutes: root.querySelector(".timer__part--minutes"),
+      seconds: root.querySelector(".timer__part--seconds"),
+      control: root.querySelector(".timer__btn--control"),
+      reset: root.querySelector(".timer__btn--reset")
+    };
+
+    this.interval = null;
+    this.remainingSeconds = 0;
+
+    this.el.control.addEventListener("click", () => {
+      if (this.interval === null) {
+        this.start();
+      } else {
+        this.stop();
+      }
+    });
+
+    this.el.reset.addEventListener("click", () => {
+      const inputMinutes = prompt("Enter number of minutes:");
+
+      if (inputMinutes < 100000) {
+        this.stop();
+        this.remainingSeconds = inputMinutes * 60;
+        this.updateInterfaceTime();
+      }
+    });
+  }
+
+  updateInterfaceTime() {
+    const minutes = Math.floor(this.remainingSeconds / 60);
+    const seconds = this.remainingSeconds % 60;
+
+    this.el.minutes.textContent = minutes.toString().padStart(2, "0");
+    this.el.seconds.textContent = seconds.toString().padStart(2, "0");
+  }
+
+  updateInterfaceControls() {
+    if (this.interval === null) {
+      this.el.control.innerHTML = `<span class="material-icons">play_arrow</span>`;
+      this.el.control.classList.add("timer__btn--start");
+      this.el.control.classList.remove("timer__btn--stop");
+    } else {
+      this.el.control.innerHTML = `<span class="material-icons">pause</span>`;
+      this.el.control.classList.add("timer__btn--stop");
+      this.el.control.classList.remove("timer__btn--start");
+    }
+  }
+
+  start() {
+    if (this.remainingSeconds === 0) return alert('Please select a valid input');
+
+    this.interval = setInterval(() => {
+      this.remainingSeconds--;
+      this.updateInterfaceTime();
+
+      if (this.remainingSeconds === 1) {
+        this.stop();
+        let end = 'Timer Has Ended'
+        
+        let tone=new Audio('ringtone.mp3')
+        tone.play()
+        tone.loop()
+
+      }
+    }, 1000);
+
+    this.updateInterfaceControls();
+  }
+
+  stop() {
+    clearInterval(this.interval);
+
+    this.interval = null;
+
+    this.updateInterfaceControls();
+
+
+  }
+
+  static getHTML() {
+    return `
+			<span class="timer__part timer__part--minutes">00</span>
+			<span class="timer__part">:</span>
+			<span class="timer__part timer__part--seconds">00</span>
+			<button type="button" class="timer__btn timer__btn--control timer__btn--start">
+				<span class="material-icons">play_arrow</span>
+			</button>
+			<button type="button" class="timer__btn timer__btn--reset">
+				<span class="material-icons">timer</span>
+			</button>
+		`;
+  }
+}
+
+new Timer(
+	document.querySelector(".timer")
+);
+      </script>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+      <nav class="nav">
+        <a href="a.html" class="nav__link">
+    <img width="30px" src="./alarm_FILL0_wght400_GRAD0_opsz48.png" alt="">
+          <span class="nav__text">Alarm</span>
+        </a>
+        <a href="stopwatch.html" class="nav__link nav__link--active">
+            <img width="30px" src="./timer_3_alt_1_FILL0_wght400_GRAD0_opsz48.png" alt="">
+          <span class="nav__text">Stopwatch</span>
+        </a>
+        <a href="b.html" class="nav__link">
+          <img width="30px" src="./public_FILL0_wght400_GRAD0_opsz48.png">
+          <span class="nav__text">World Clock</span>
+        </a>
+        <a href="alarm.html" class="nav__link">
+      <img width="30px" src="./alarm_add_FILL0_wght400_GRAD0_opsz48.png" alt="">
+          <span class="nav__text">Alarm</span>
+        </a>
+    
+        </a>
+      </nav>
+      <style>
+        body {
+    margin: 0 0 55px 0;
+}
+
+.nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 55px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    background-color: #ffffff;
+    display: flex;
+    overflow-x: auto;
+}
+
+.nav__link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    min-width: 50px;
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: sans-serif;
+    font-size: 13px;
+    color: #444444;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.nav__link:hover {
+    background-color: #eeeeee;
+}
+
+
+
+.nav__icon {
+    font-size: 18px;
+}
+      </style>
+      
+</body>
+</html>
